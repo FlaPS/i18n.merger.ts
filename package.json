@@ -1,0 +1,10 @@
+{
+  "name": "NodejsMergei18n",
+  "version": "0.0.0",
+  "description": "NodejsMergei18n",
+  "main": "app.js",
+  "author": {
+    "name": "Max Shammasov",
+    "email": ""
+  }
+}
