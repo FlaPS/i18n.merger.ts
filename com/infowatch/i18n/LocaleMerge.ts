@@ -44,7 +44,7 @@ export class LocaleMerge extends LocaleSet {
     /**
      * Add undefined properties from master to slave
      * TODO: string.replace - replaces all accurancies, 
-     * looks like ok - but some russian words could have different translation ???
+     * looks like ok - but in case of equal  key and value first accurence will be replaced
      * add reg exps and cursor/tail of string with first match to explude duplicate key values
      */
     private mergeObjects(master: any, slave: any) {
@@ -52,18 +52,18 @@ export class LocaleMerge extends LocaleSet {
         // For each property of master object
         for (var prop in master) {
 
-            //var template:string = "\"" + master[prop] + "\"";
-            //var index: number = this.tail.indexOf(template, this.cursor);
+
+            var template:RegExp = new RegExp("\""+master[prop]+"\"");
             
             // if slave object is not defined
             if ( slave[prop] === undefined) {
                 
-                console.log(" key '" + prop + "' not found -> replaced with: " + master[prop])
+                console.log(" key '" + prop + "' not found -> replaced with: " +"!!!"+ master[prop]+"!!!")
                     
                     // copy property in case of primitive
                     if (isPrimitive(master[prop])) {
                         this.mergeCount++;
-                        this.raw = this.raw.replace("\""+master[prop]+"\"", "\"!!!" + master[prop] + "!!!\"");
+                        this.raw = this.raw.replace(template, "\"!!!" + master[prop] + "!!!\"");
                     }
                     // or create new object 
                     else {
@@ -76,7 +76,7 @@ export class LocaleMerge extends LocaleSet {
                 // if propety is primitive - just copy one
                 if (isPrimitive(master[prop])) {
              
-                    this.raw = this.raw.replace("\""+master[prop]+"\"", "\""+slave[prop]+"\"");
+                    this.raw = this.raw.replace(template, "\""+slave[prop]+"\"");
                 }
                 // otherwise deep cloning with mergeObjects method
                 else {
